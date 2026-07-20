@@ -1,0 +1,18 @@
+server:
+  port: 8082 # Local fallback port
+
+spring:
+  application:
+    name: product-service # Must match the file name in your GitHub config repo
+  config:
+    import: "optional:configserver:http://localhost:8888"
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fintech_db
+    driver-class-name: org.postgresql.Driver
+    username: fintech_user
+    password: fintech_password
+    jpa:
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      hibernate:
+        ddl-auto: update
+      show-sql: true
