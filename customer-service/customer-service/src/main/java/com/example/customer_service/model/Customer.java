@@ -25,7 +25,4 @@ public class Customer {
   private String email;
   private BigDecimal balance;
 
-  @Transient
-  private List<ProductDTO> products;
-
 }
