@@ -10,7 +10,7 @@ eureka:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/customer_db
+    url: jdbc:postgresql://localhost:5432/customer_db?options=-c%20timezone=UTC
     username: customer_user
     password: customer_password
     driver-class-name: org.postgresql.Driver
