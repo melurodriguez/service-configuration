@@ -3,8 +3,10 @@ package com.example.customer_service.service;
 import com.example.customer_service.client.ProductClient;
 import com.example.customer_service.dto.CustomerRequestDTO;
 import com.example.customer_service.dto.CustomerResponseDTO;
-import com.example.customer_service.dto.ProductDTO;
+import com.example.customer_service.dto.ProductRequestDTO;
+import com.example.customer_service.dto.ProductResponseDTO;
 import com.example.customer_service.exception.CustomerNotFoundException;
+import com.example.customer_service.exception.ProductOwnershipException;
 import com.example.customer_service.mapper.CustomerMapper;
 import com.example.customer_service.model.Customer;
 import com.example.customer_service.repository.CustomerRepository;
@@ -33,8 +35,11 @@ public class CustomerService {
     Customer customer= customerRepository.findById(customerId)
             .orElseThrow(()-> new CustomerNotFoundException("Customer not found with ID: " + customerId));
 
-    List<ProductDTO> products= productClient.getProductsByCustomerId(customer.getId());
-    return customerMapper.toResponse(customer);
+    List<ProductResponseDTO> products= productClient.getProductsByCustomerId(customer.getId());
+    CustomerResponseDTO response = customerMapper.toResponse(customer);
+    response.setProducts(products);
+
+    return response;
   }
 
   public CustomerResponseDTO createCustomer(CustomerRequestDTO customerRequestDTO) {
@@ -63,5 +68,38 @@ public class CustomerService {
 
     customerRepository.deleteById(customerId);
     return "Customer has been successfully deleted";
+  }
+
+  public ProductResponseDTO createProductByCustomer(Long customerId, ProductRequestDTO requestDTO) {
+    getCustomerById(customerId);
+    requestDTO.setCustomerId(customerId);
+    return productClient.createProduct(requestDTO);
+  }
+
+  public ProductResponseDTO getProductById(Long customerId, Long productId) {
+    getCustomerById(customerId);
+    ProductResponseDTO product = productClient.getProductById(productId);
+
+    if (!product.getCustomerId().equals(customerId)) {
+      throw new ProductOwnershipException(
+              "The product does not belong to the specified customer.");
+    }
+    return product;
+  }
+
+  public ProductResponseDTO updateProductByCustomer(
+          Long customerId,
+          Long productId,
+          ProductRequestDTO requestDTO) {
+
+    getProductById(customerId, productId);
+    requestDTO.setCustomerId(customerId);
+    return productClient.updateProduct(productId, requestDTO);
+  }
+
+  public String deleteProductByCustomer(Long customerId, Long productId) {
+    getProductById(customerId, productId);
+    productClient.deleteProduct(productId);
+    return "Product has been successfully deleted";
   }
 }
