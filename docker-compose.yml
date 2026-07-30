@@ -1,0 +1,29 @@
+services:
+
+  customer-db:
+    image: postgres:16
+    container_name: customer-db
+    environment:
+      POSTGRES_DB: customer_db
+      POSTGRES_USER: customer_user
+      POSTGRES_PASSWORD: customer_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - customer_data:/var/lib/postgresql/data
+
+  product-db:
+    image: postgres:16
+    container_name: product-db
+    environment:
+      POSTGRES_DB: product_db
+      POSTGRES_USER: product_user
+      POSTGRES_PASSWORD: product_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - product_data:/var/lib/postgresql/data
+
+  volumes:
+    customer_data:
+    product_data:
