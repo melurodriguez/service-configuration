@@ -43,4 +43,25 @@ public class ProductService {
             .orElseThrow(() -> new ProductNotFoundException("Product not found with ID: " + id));
     return productMapper.toResponse(product);
   }
+
+  public ProductResponseDTO updateProduct(Long productId, ProductRequestDTO requestDTO){
+    Product product= productRepository.findById(productId)
+            .orElseThrow(()->new ProductNotFoundException("Product not found with ID: " + productId));
+    product.setCustomerId(requestDTO.getCustomerId());
+    product.setType(requestDTO.getType());
+    product.setAccountNumber(requestDTO.getAccountNumber());
+    product.setBalance(requestDTO.getBalance());
+
+    Product updatedProduct= productRepository.save(product);
+    return productMapper.toResponse(updatedProduct);
+  }
+
+  public String deleteProduct(Long productId){
+    if(!productRepository.existsById(productId)){
+      throw  new ProductNotFoundException("Product not found with ID: " + productId);
+    }
+
+    productRepository.deleteById(productId);
+    return "Product has been successfully deleted";
+  }
 }
