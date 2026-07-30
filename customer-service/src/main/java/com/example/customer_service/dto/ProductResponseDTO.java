@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDTO {
+public class ProductResponseDTO {
   private Long id;
   private Long customerId;
   private String type;           // e.g., "ACCOUNTS", "CARDS", "LOANS", "INVESTMENTS"

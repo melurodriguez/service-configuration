@@ -5,16 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerResponseDTO {
-  private Long id;
-  private String name;
-  private String document;
-  private String email;
+public class ProductRequestDTO {
+
+  private Long customerId;
+  private String type;           // e.g., "ACCOUNTS", "CARDS", "LOANS", "INVESTMENTS"
+  private String accountNumber;
   private BigDecimal balance;
-  private List<ProductResponseDTO> products;
 }

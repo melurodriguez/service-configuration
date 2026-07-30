@@ -1,9 +1,11 @@
 package com.example.customer_service.client;
 
-import com.example.customer_service.dto.ProductDTO;
+import com.example.customer_service.dto.ProductRequestDTO;
+import com.example.customer_service.dto.ProductResponseDTO;
+import jakarta.ws.rs.Path;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.service.annotation.DeleteExchange;
 
 import java.util.List;
 
@@ -11,5 +13,25 @@ import java.util.List;
 public interface ProductClient {
 
   @GetMapping("/products/customer/{customerId}")
-  List<ProductDTO> getProductsByCustomerId(@PathVariable("customerId") Long customerId);
+  List<ProductResponseDTO> getProductsByCustomerId(
+          @PathVariable("customerId") Long customerId);
+
+  @PostMapping("/products")
+  ProductResponseDTO createProduct(
+          @RequestBody ProductRequestDTO requestDTO);
+
+  @GetMapping("/products/{productId}")
+  ProductResponseDTO getProductById(
+          @PathVariable("productId") Long productId);
+
+  @PutMapping("/products/{productId}")
+  ProductResponseDTO updateProduct(
+          @PathVariable("productId") Long productId,
+          @RequestBody ProductRequestDTO requestDTO);
+
+  @DeleteMapping("/products/{productId}")
+  String deleteProduct(
+          @PathVariable("productId") Long productId);
+
 }
+
