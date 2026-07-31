@@ -18,33 +18,56 @@ public class ProductController {
   private final ProductService productService;
 
   @PostMapping
-  public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductRequestDTO requestDTO) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(requestDTO));
+  public ResponseEntity<ProductResponseDTO> createProduct(
+          @RequestBody ProductRequestDTO requestDTO) {
+
+    return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(productService.createProduct(requestDTO));
   }
 
   @GetMapping
   public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
-    return ResponseEntity.ok(productService.getAllProducts());
+
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(productService.getAllProducts());
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable Long id) {
-    return ResponseEntity.ok(productService.getProductById(id));
+  @GetMapping("/{productId}")
+  public ResponseEntity<ProductResponseDTO> getProductById(
+          @PathVariable Long productId) {
+
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(productService.getProductById(productId));
   }
 
   @GetMapping("/customer/{customerId}")
-  public ResponseEntity<List<ProductResponseDTO>> getProductsByCustomerId(@PathVariable Long customerId) {
-    return ResponseEntity.ok(productService.getProductsByCustomerId(customerId));
+  public ResponseEntity<List<ProductResponseDTO>> getProductsByCustomerId(
+          @PathVariable Long customerId) {
+
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(productService.getProductsByCustomerId(customerId));
   }
 
   @PutMapping("/{productId}")
-  public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Long productId, @RequestBody ProductRequestDTO requestDTO){
-    return ResponseEntity.ok(productService.updateProduct(productId, requestDTO));
+  public ResponseEntity<ProductResponseDTO> updateProduct(
+          @PathVariable Long productId,
+          @RequestBody ProductRequestDTO requestDTO) {
+
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(productService.updateProduct(productId, requestDTO));
   }
 
   @DeleteMapping("/{productId}")
-  public ResponseEntity<String> deleteProduct(@PathVariable Long productId){
-    return ResponseEntity.ok(productService.deleteProduct(productId));
-  }
+  public ResponseEntity<String> deleteProduct(
+          @PathVariable Long productId) {
 
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(productService.deleteProduct(productId));
+  }
 }
