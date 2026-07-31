@@ -78,6 +78,11 @@ public class CustomerService {
     return "Customer has been successfully deleted";
   }
 
+  public List<ProductResponseDTO> getProductsByCustomer(Long customerId){
+    getCustomerById(customerId);
+    return productClient.getProductsByCustomerId(customerId);
+  }
+
   public ProductResponseDTO createProductByCustomer(Long customerId, ProductRequestDTO requestDTO) {
     getCustomerById(customerId);
     requestDTO.setCustomerId(customerId);

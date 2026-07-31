@@ -63,6 +63,14 @@ public class CustomerController {
             .body(customerService.deleteCustomer(customer_id));
   }
 
+  @GetMapping("/{customerId}/products")
+  public ResponseEntity<List<ProductResponseDTO>> getProductsByCustomer(
+          @PathVariable Long customerId){
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(customerService.getProductsByCustomer(customerId));
+  }
+
   @PostMapping("/{customerId}/products")
   public ResponseEntity<ProductResponseDTO> createProductByCustomer(
           @PathVariable Long customerId,
