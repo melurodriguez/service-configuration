@@ -7,7 +7,7 @@ spring:
   config:
     import: "optional:configserver:http://localhost:8888"
   datasource:
-    url: jdbc:postgresql://localhost:5432/customer_db?options=-c%20timezone=UTC
+    url: jdbc:postgresql://localhost:5432/customer_db?options=-c%20timezone=America/Argentina/Buenos_Aires
     driver-class-name: org.postgresql.Driver
     username: customer_user
     password: customer_password

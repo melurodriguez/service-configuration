@@ -148,17 +148,37 @@ http://localhost:8081
 
 ```bash
 cd customer-service
-mvn spring-boot:run
-```
-
-Disponible en:
+mvn spring-boot:run "-Dspring-boot.run.jvmArguments=-Duser.timezone=UTC"
 
 ```
 http://localhost:8082
 ```
 
 ---
+## Ejecución de la aplicación
 
+Si utilizás IntelliJ IDEA y la aplicación no inicia mostrando el siguiente error:
+
+```text
+FATAL: invalid value for parameter "TimeZone": "America/Buenos_Aires"
+```
+
+configurá la JVM para utilizar la zona horaria UTC.
+
+### IntelliJ IDEA
+
+1. Ir a **Run → Edit Configurations...**
+2. Seleccionar la aplicación Spring Boot que se desea ejecutar.
+3. En **VM options**, agregar:
+
+```text
+-Duser.timezone=UTC
+```
+
+4. Guardar la configuración y volver a ejecutar la aplicación.
+
+
+---
 # Documentación de la API
 
 Una vez iniciados los servicios, la documentación puede consultarse mediante Swagger.
