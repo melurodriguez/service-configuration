@@ -34,4 +34,13 @@ public class GlobalExceptionHandler {
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(ex.getMessage());
   }
+
+  @ExceptionHandler(ProductNotFoundException.class)
+  public ResponseEntity<String> handleProductNotFound(
+          ProductNotFoundException ex) {
+
+    return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(ex.getMessage());
+  }
 }

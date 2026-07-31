@@ -6,10 +6,12 @@ import com.example.customer_service.dto.CustomerResponseDTO;
 import com.example.customer_service.dto.ProductRequestDTO;
 import com.example.customer_service.dto.ProductResponseDTO;
 import com.example.customer_service.exception.CustomerNotFoundException;
+import com.example.customer_service.exception.ProductNotFoundException;
 import com.example.customer_service.exception.ProductOwnershipException;
 import com.example.customer_service.mapper.CustomerMapper;
 import com.example.customer_service.model.Customer;
 import com.example.customer_service.repository.CustomerRepository;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -48,17 +50,23 @@ public class CustomerService {
     return customerMapper.toResponse(savedCustomer);
   }
 
-  public CustomerResponseDTO updateCustomer(Long customerId, CustomerRequestDTO customerRequestDTO) {
+  public CustomerResponseDTO updateCustomer(
+          Long customerId,
+          CustomerRequestDTO customerRequestDTO) {
+
     Customer customer = customerRepository.findById(customerId)
-            .orElseThrow(() -> new CustomerNotFoundException("Customer not found with ID: " + customerId));
+            .orElseThrow(() ->
+                    new CustomerNotFoundException(
+                            "Customer not found with ID: " + customerId));
 
     customer.setName(customerRequestDTO.getName());
     customer.setDocument(customerRequestDTO.getDocument());
     customer.setEmail(customerRequestDTO.getEmail());
     customer.setBalance(customerRequestDTO.getBalance());
 
-    Customer updatedCustomer = customerRepository.save(customer);
-    return customerMapper.toResponse(updatedCustomer);
+    customerRepository.save(customer);
+
+    return getCustomerById(customerId);
   }
 
   public String deleteCustomer(Long customerId) {
@@ -78,12 +86,21 @@ public class CustomerService {
 
   public ProductResponseDTO getProductById(Long customerId, Long productId) {
     getCustomerById(customerId);
-    ProductResponseDTO product = productClient.getProductById(productId);
+
+    ProductResponseDTO product;
+
+    try {
+      product = productClient.getProductById(productId);
+    } catch (FeignException.NotFound ex) {
+      throw new ProductNotFoundException(
+              "Product not found with ID: " + productId);
+    }
 
     if (!product.getCustomerId().equals(customerId)) {
       throw new ProductOwnershipException(
               "The product does not belong to the specified customer.");
     }
+
     return product;
   }
 
