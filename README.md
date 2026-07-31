@@ -29,7 +29,7 @@ Cada microservicio posee responsabilidades independientes y su propia base de da
 | Config Server | Centraliza la configuración de todos los microservicios | 8888 |
 | Eureka Server | Registro y descubrimiento de servicios | 8761 |
 | Customer Service | Gestión de clientes y administración de productos asociados | 8082 |
-| Product Service | Gestión de productos | 8081 |
+| Product Service | Gestión de productos | 8083 |
 
 ---
 
